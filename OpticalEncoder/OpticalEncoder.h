@@ -42,17 +42,20 @@ void OpticalEncoder::setup(uint8_t pinNr, void (*ISR_callback)(void), int value,
   #endif
 }
 
+const unsigned long INTERVAL_TIME = 3; // If you get max 30Hz, change this number
+                                       // If you have a HAL encoder, just change to 0
+
 inline void OpticalEncoder::handleInterrupt(void)
 {
   unsigned long currmillis = millis();
-  if (currmillis - prevmillis > 3) {
+  if (currmillis - prevmillis >= 3) {
     if(_movingForward) {
       _encoder0Pos++;
     } else {
       _encoder0Pos--;
     }
+    prevmillis = currmillis;
   }
-  prevmillis = currmillis;
 }
 
 
